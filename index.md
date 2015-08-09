@@ -6,9 +6,12 @@ layout: default
 
 * [steamkeysactivator](https://github.com/timothybasanov/steamkeysactivator):
   Apple script to activate Steam keys bought on HumbleBundle
-* Xpra [homebrew-tap](https://github.com/timothybasanov/homebrew-tap): Homebrew
+* [Xpra homebrew tap](https://github.com/timothybasanov/homebrew-xpra): Homebrew
   formula to install Xpra (https://www.xpra.org) on a Mac 
   without a dreadful X11/XQuartz
+* [Google Authenticator homebrew tap](https://github.com/timothybasanov/homebrew-google-authenticator): Homebrew
+  formula to install "Google Authenticator" PAM module (https://github.com/google/google-authenticator) on a Mac
+  to enable two-factor authentication for ssh.
 * [terminal-app-function-keys](https://github.com/timothybasanov/terminal-app-function-keys):
   Configuration file for Mac OS X *Terminal.app* which enables proper handling
   for functional keys, mostly useful for Byobu as it uses too many hot keys
