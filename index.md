@@ -31,12 +31,12 @@ layout: default
 # One-off scripts:
 
 * [zeroshell-linode](https://github.com/timothybasanov/zeroshell-linode):
-  Automation script to install Zeroshell (http://www.wikiwand.com/en/Zeroshell) 
-  onto Linode (Xen-based VM)
+  Automation script to install [Zeroshell](http://www.wikiwand.com/en/Zeroshell) 
+  onto [Linode](https://www.linode.com) (Xen-based VM)
 * [beaglebone-ubuntu](https://gist.github.com/timothybasanov/4cac1f8be77a6f912886): 
   Steps I follow to install Ubuntu onto my BeagleBone (http://beagleboard.org/bone)
 * [soekris-ubuntu](https://gist.github.com/timothybasanov/f87a337180dd153ed288):
-  Steps I follow to install Ubuntu on my Soekris router (http://soekris.com)
+  Steps I follow to install Ubuntu on my [Soekris](http://soekris.com) router
 
 # Some old blog posts of mine:
 
