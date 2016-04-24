@@ -1,7 +1,11 @@
 # Site settings
-title: Timothy Basanov
+title: Timothy Basanov's home page
 email: timofey.basanov@gmail.com
-url: "http://timothybasanov.com" # the base hostname & protocol for your site
+url: "https://timothybasanov.com" # the base hostname & protocol for your site
 github_username: timothybasanov
 twitter_username: timothybasanov 
 timezone: America/Los_Angeles
+
+exclude: [Gemfile, README.md, www.sublime-project, CNAME]
+kramdown:
+  input: GFM
