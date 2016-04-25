@@ -4,5 +4,19 @@
 		{
 			"path": "."
 		}
-	]
+	],
+  "build_systems":
+    [
+        {
+            "name": "Jekyll",
+            "cmd": ["jekyll", "build"],
+            "file_regex": "^.*(?:Build Warning:.* in |Error:\\s+\\()([^\\s\\):]+)(LineNumber)?(ColumnNumber)?[:\\)\\s]*(.*)",
+            "working_dir": "${project_path:${folder}}",
+            "target": "ansi_color_build",
+            "syntax": "Packages/ANSIescape/ANSI.tmLanguage",
+            "variants": [
+              { "name": "Run", "cmd": ["jekyll", "serve", "--watch"] }
+            ]
+        }
+    ]
 }
