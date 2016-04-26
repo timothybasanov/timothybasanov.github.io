@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Show Git State in ZSH Prompt via vcs_info"
+title:  "Show Git State in zsh Prompt via vcs_info"
 date:   2016-04-23
 ---
 
@@ -22,21 +22,25 @@ date:   2016-04-23
   p.p1, p.p2, p.p3 {  font-family: "Lucida Console", Monaco, monospace }
 </style>
 
-Zsh has excellent capabilities of supporting different vcs, like git. There is plenty of [generic prompt documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) and [vcs-specific prompt documentation](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information) and it's very-very long. I'm trying to make it as short as possible and as simple as possible without loosing all the important points when you'll want to customize it for yourself.
+*zsh* has excellent capabilities of supporting different version control systems, like *git* in its command line prompt. Setup is pretty convoluted and I'll try to guide you through it to give you basic understanding of all the building blocks. You'll be able to craft your own one.
 
-I'll show evolution of a command line prompt after each modification. I'll assume `~/.git` exists and has changes on the master branch. Current directory is set to `~/.ssh`.
+I'll show evolution of a command line prompt after each modification in `.zshrc`. I'll assume `~/.git` exists and has changes on the master branch. Current directory is set to `~/.ssh`.
 
-All the changes mentioned are done in `~/.zshrc` file.
+> zsh has very extensive documentation. Two particularly useful pages are: [zsh Prompt Expansion](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) and [zsh Version Control Information](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information). You do not need to read them through, but they will be extremely useful when you'll try to add some special flavor into your own prompt command.
+
+### Quickstart
+
+You can set reasonable defaults from the [zsh vcs_info Quickstart](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Quickstart) (don't forget to add `autoload -Uz vcs_info`) and try to understand what does it mean later.
 
 ### Show current user and directory in the command prompt
 
 <p class="p1"><span class="s1">timothy@home:~/.ssh&gt;<span class="Apple-converted-space"> </span></span></p>
 
-Zsh supports username `%n`, short hostname `%m` and directory `%~` in prompt  (there are [many more available](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html)):
+zsh supports username `%n`, short hostname `%m` and directory `%~` in prompt  ([other supported symbols](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information)):
 
  - Let's show `user@host:dir> ` prompt: `PROMPT='%n@%m:%~> '`
 
-It's pretty basic, but that's only the beginning.
+It's pretty basic, but that's only a beginning.
 
 ### Show git (or any other version management system) info in the prompt
 
@@ -57,6 +61,8 @@ Now we can see that we're within git repository.
   - Show base (.git) directory, current branch and path within a repo: 
     `zstyle ':vcs_info:*' formats '%R/(%b)%S'`
 
+All the information about available options check [zsh vcs_info Configuration](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Configuration-3). It's particularly useful to check for all expansion parameters available in different contexts.
+
 That's much better, we got back information about our current directory
 
 ### Add information about uncommitted changes
@@ -70,15 +76,18 @@ That's much better, we got back information about our current directory
 
 Good, we see `!` as we have uncommitted changes, as expected.
 
-### Supporting merge and other unusual stages
+### Supporting merge and other special states
 
-Sometimes "additional information" `%m` is provided, better to have it than not:
+<p class="p1"><span class="s1">timothy@home:~/(rebase|20eeb6f... (3 applied)).ssh!&gt;<span class="Apple-converted-space"> </span></span></p>
 
-  - Miscellaneous data support: `zstyle ':vcs_info:*' formats '%R/(%b)%S%u%c`**`%m'`**
+When *git* is in a *special* state (rebase or merge for *git*), branch `%b` information should be replaced with "current state" `%a` information. Also it's a separate configuration string, `actionformats` instead of familiar `formats` one.
 
-When git is in a special state, e.g. merge, branch `%b` information should be replaced with "current state" `%a` information. Also it's a separate configuration string, `actionformats` instead of familiar `formats` one.
+  - Support *special* state: `zstyle ':vcs_info:*' `**`actionformats`**` '%R/(`**`%a`**`)%S%u%c'`
+  - Add miscellaneous data in a *special* state: `zstyle ':vcs_info:*' actionformats '%R/(%a`**`|%m`**`)%S%u%c'`
 
-  - Support special (merge) state: `zstyle ':vcs_info:*' `**`actionformats`**` '%R/(`**`%a`**`)%S%u%c%m'`
+In *git* miscellaneous data is formatted as either `%p (%n applied)` or `no patch applied` (see `/usr/share/zsh/functions/$ZSH_VERSION/functions/VCS_INFO_get_data_git`). Where `%p` is your full revision number e.g. `20eeb6fffcbb7260601af5181a6b4d5e46395c86`, which is too long for the command line prompt. To shorten it in *zsh* to only 7 digits of hash I use `%10>...>%p%<<` instead, which roughly translates to: output `%p`, no longer than 10 symbols, shorten with `...` string on the right side. `%<<` at the end is a marker for a string that should be 10 symbols long. See [Conditional Substrings in Prompts](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Conditional-Substrings-in-Prompts) for more details.
+
+  - Shorten revision number during rebase: `zstyle ':vcs_info:git:*' patch-format '%10>...>%p%<< (%n applied)'`
 
 ### Use `~` for the home directory once again
 
@@ -98,15 +107,17 @@ function +vi-home-path() {
 
 <p class="p3"><span class="s2">timothy</span><span class="s3">@</span><span class="s4">home</span><span class="s3">:</span><span class="s5">~/</span><span class="s2">(master)</span><span class="s5">.ssh</span><span class="s6"><b>●</b></span><span class="s7">⟫</span><span class="s3"><span class="Apple-converted-space"> </span></span></p>
 
-Zsh supports colors, of course, but they are very verbose: `%{``%F{red}``%} red text %{``%f``%}`. Other colors: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`. Bold text is also supported: `%{``%B``%} bold text %{``%b``%}`. It's recommended to use `%{``%E``%}` to reset colors right before the end of your prompt.
+zsh supports colors, of course, but they are very verbose: `%{``%F{red}``%} red text %{``%f``%}`. Other colors: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan` and `white`. Bold text is also supported: `%{``%B``%} bold text %{``%b``%}`. It's recommended to use `%{``%E``%}` to reset colors right before the end of your prompt. Check [Visual Effects](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Visual-effects) for more info.
 
 And, almost certainly UTF-8 is supported on your terminal so feel free to use Unicode symbols as well.
 
   - Example of `stagedstr` after making it nicer: `zstyle ':vcs_info:*' stagedstr '%{``%F{green}%B%}`**`●`**`%{``%b%f%}`.
 
-For the full source code see code snippets at the end of this post.
+That's it! Now you know everything you have to know to craft your own `vcs_info`-based prompt.
 
-## Full text of my current `.zshenv` and `.zshrc`
+Good luck!
+
+## Full text of my current `.zshrc`
 
 <script src="https://gist.github.com/timothybasanov/87df55aad8ca8afe40d2.js"></script>
 
