@@ -5,18 +5,20 @@
 			"path": "."
 		}
 	],
-  "build_systems":
+    "build_systems":
     [
         {
             "name": "Jekyll",
-            "cmd": ["jekyll", "build"],
+            "cmd": ["jekyll", "build", "--future"],
             "file_regex": "^.*(?:Build Warning:.* in |Error:\\s+\\()([^\\s\\):]+)(LineNumber)?(ColumnNumber)?[:\\)\\s]*(.*)",
             "working_dir": "${project_path:${folder}}",
-            "target": "ansi_color_build",
-            "syntax": "Packages/ANSIescape/ANSI.tmLanguage",
-            "variants": [
-              { "name": "Run", "cmd": ["jekyll", "serve", "--watch"] }
-            ]
+            "variants": [ { 
+                "name": "Run", 
+                "cmd": ["jekyll", "serve", "--watch", "--future"],
+            }, { 
+                "name": "Stop", 
+                "cmd": ["pkill", "-fl", "jekyll"] 
+            } ],
         }
     ]
 }
