@@ -6,6 +6,6 @@ github_username: timothybasanov
 twitter_username: timothybasanov 
 timezone: America/Los_Angeles
 
-exclude: [Gemfile, README.md, www.sublime-project, CNAME]
+exclude: [Gemfile, README.md, '*.sublime-*', CNAME]
 kramdown:
   input: GFM
