@@ -4,8 +4,20 @@ email: timofey.basanov@gmail.com
 url: "https://timothybasanov.com" # the base hostname & protocol for your site
 github_username: timothybasanov
 twitter_username: timothybasanov 
-timezone: America/Los_Angeles
 
 exclude: [Gemfile, README.md, '*.sublime-*', CNAME]
-kramdown:
+safe: true
+timezone: America/Los_Angeles
+
+kramdown: 
   input: GFM
+
+redcarpet:
+  extensions: [smart]
+
+defaults:
+  -
+    scope:
+      type: "posts"
+    values:
+      layout: "post"

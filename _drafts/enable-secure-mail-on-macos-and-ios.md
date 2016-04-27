@@ -1,7 +1,5 @@
 ---
-layout: post
-title:  "Enable Secure Signed Email on macOS and iOS"
-date:   2016-05-01
+title:  "DRAFT: Enable Secure Signed Email on macOS and iOS"
 ---
 
 Both *macOS* and *iOS* support secure signing for your email messages. It's easy to setup and it "just works".
@@ -29,7 +27,7 @@ That's it. Your email is now secured on your Mac.
 
 # Enabling it on your iOS device
 
-You'll need to install certificate on your iOS device first: [Install Certificates on iOS Device Securely via Custom Profile](/2016/04/30/ios-secure-certificate-installation.html). Include both your and COMODO's certificates in a profile.
+You'll need to install certificate on your iOS device first: [Install Certificates on iOS Device Securely via Custom Profile](/2016/04/26/ios-secure-certificate-installation.html). Include both your and COMODO's certificates in a profile.
 
   - Go to *Settings / Mail, Contacts, Calendars / Accounts / Your Account / Mail / Advanced*
   - Enable *S/MIME* and *Sign* with the right certificate (if you have many email addresses)
