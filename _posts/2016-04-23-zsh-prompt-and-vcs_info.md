@@ -1,10 +1,16 @@
 ---
-title:  "Show Git State in zsh Prompt via vcs_info"
+title:  "Show git state in zsh prompt via vcs_info"
 ---
 
 *zsh* has excellent capabilities of supporting different version control systems, like *git* in its command line prompt. Setup is pretty convoluted and I'll try to guide you through it to give you basic understanding of all the building blocks. You'll be able to craft your own one.
 
-{{ excerpt_separator }}
+I'll show evolution of a command line prompt after each modification in `.zshrc`. I'll assume `~/.git` exists and has changes on the master branch. Current directory is set to `~/.ssh`.
+
+<!--more-->
+
+> zsh has very extensive documentation. Two particularly useful pages are: [zsh Prompt Expansion](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) and [zsh Version Control Information](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information). You do not need to read them through, but they will be extremely useful when you'll try to add some special flavor into your own prompt command.
+
+### Quickstart
 
 <!-- Some magic from TextEdit -->
   <style type="text/css">
@@ -20,15 +26,9 @@ title:  "Show Git State in zsh Prompt via vcs_info"
     span.s7 {font: 22.0px 'Apple Symbols'; font-kerning: none; color: #ffffff; background-color: #000000}
   </style>
 <!-- Making sure of a monospace font -->
-<style type="text/css">
-  p.p1, p.p2, p.p3 {  font-family: "Lucida Console", Monaco, monospace }
-</style>
-
-I'll show evolution of a command line prompt after each modification in `.zshrc`. I'll assume `~/.git` exists and has changes on the master branch. Current directory is set to `~/.ssh`.
-
-> zsh has very extensive documentation. Two particularly useful pages are: [zsh Prompt Expansion](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) and [zsh Version Control Information](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information). You do not need to read them through, but they will be extremely useful when you'll try to add some special flavor into your own prompt command.
-
-### Quickstart
+  <style type="text/css">
+    p.p1, p.p2, p.p3 {  font-family: "Lucida Console", Monaco, monospace }
+  </style>
 
 You can set reasonable defaults from the [zsh vcs_info Quickstart](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Quickstart) (don't forget to add `autoload -Uz vcs_info`) and try to understand what does it mean later.
 

@@ -1,9 +1,7 @@
 ---
-layout: default
-title: "My GitHub Projects"
+layout: page
+title: "GitHub projects"
 ---
-
-# My small GitHub projects:
 
 * [steamkeysactivator](https://github.com/timothybasanov/steamkeysactivator):
   Apple script to activate Steam keys bought on HumbleBundle

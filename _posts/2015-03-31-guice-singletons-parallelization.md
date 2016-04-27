@@ -1,10 +1,10 @@
 ---
-title:  "Guice Singletons Parallelization"
+title:  "Guice singletons parallelization"
 ---
 
 Guice is a Java library for dependency injection. It's a very widespread one and a lot of servers written in Java use it. Surprisingly until recently *all* singleton objects created by Guice were created sequentially.
 
-{{ excerpt_separator }}
+<!--more-->
 
 It had two downsides:
 

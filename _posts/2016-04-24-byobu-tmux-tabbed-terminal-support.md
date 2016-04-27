@@ -1,14 +1,14 @@
 ---
-title:  "Configuring byobu/tmux to Support Tabbed/Windowed Terminals"
+title:  "Configuring byobu/tmux to support tabbed & windowed terminals"
 ---
 
 At some point my favorite console "window manager" [byobu](http://byobu.co) switched from *screen* to *tmux* as a backend. *tmux* is much more feature rich and supports splits, for example. 
 
 There is only one downside, but a big one: there could only be one client per *tmux* session. So when you open terminal in several different windows each of them connects to the same *tmux* session and they show exactly the same window. Yes, you can use *tmux* internal windowing capabilities just fine, but I always wanted to have several "real" windows into the same *tmux* session.
 
-{{ excerpt_separator }}
-
 Looks like there is a way to exactly that using *tmux* "session grouping". This piece of functionality is quite quirky and is almost never mentioned in all the articles about *tmux* that I've read. But it does exactly what I need: several sessions looking into the same set of windows.
+
+<!--more-->
 
 # Creating several connected sessions in raw *tmux*
 

@@ -1,10 +1,10 @@
 ---
-title:  "Install Certificates on iOS Device Securely via Custom Profile"
+title:  "Install certificates on iOS devices securely via custom profile"
 ---
 
 Installing certificates on iOS devices (at least on iPads and iPhones) can be done via a cable without using a less secure email-based transport. It's easy and free via [Apple Configurator 2](https://itunes.apple.com/us/app/apple-configurator-2/id1037126344).
 
-{{ excerpt_separator }}
+<!--more-->
 
 # Saving certificates on disk
 

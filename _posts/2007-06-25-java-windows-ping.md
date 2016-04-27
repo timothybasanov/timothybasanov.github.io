@@ -7,7 +7,7 @@ classes.   You Must use JNI.
 But, it is much simpler to to use JNI through 
 [JniWrapper](http://www.teamdev.com/jniwrapper/). 
 
-{{ excerpt_separator }}
+<!--more-->
 
 In short you will write your 
 code in pure java and all native work will be done through lightweight jni 

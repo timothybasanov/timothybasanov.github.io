@@ -7,7 +7,7 @@ date:   2011-08-31
 
 Recently I've made it possible to integrate TeamCity and Gerrit code review tool. As far as I know there is no page in the internets about this particular integration, then here is a post.
 
-{{ excerpt_separator }}
+<!--more-->
 
 First of all I would like to thank two people, that have helped me a lot. First is Chris Smith who as far as I know have done it first in this ticket: <a href="http://jira.dmdirc.com/browse/INFRA-25">http://jira.dmdirc.com/browse/INFRA-25</a>, I've got an inspiration and direct help from him. Second is brilliant Unix systems administrator Andrey Domas, who helped me with the Unix side.
 

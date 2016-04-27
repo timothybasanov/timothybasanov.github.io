@@ -1,10 +1,12 @@
 ---
-title:  "DRAFT: Enable Secure Signed Email on macOS and iOS"
+title:  "DRAFT: Enable secure signed email on macOS and iOS"
 ---
 
 Both *macOS* and *iOS* support secure signing for your email messages. It's easy to setup and it "just works".
 
 If you ever receive a signed message from somebody you can send them *encrypted email*. Only your recipient will be able to read it. Even if your email account is compromised, this still holds true.
+
+<!--more-->
 
 # Getting free secure email certificate
 

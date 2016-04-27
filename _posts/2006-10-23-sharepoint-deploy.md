@@ -4,7 +4,7 @@ title:  "How to develop SharePoint Features on a remote server"
 
 Usually all *SPS 2007* developers create their programs on localhost server and later they publish them onto production one.   But I have not that much RAM to install server onto my developer machine. Plus - using remote machine as a server is pretty convenient, cause you may test your programme in a battle field, which should help you to avoid different code security problems.     The choice is up to you, but even on local machine some parts of my story will be usable.   
 
-{{ excerpt_separator }}
+<!--more-->
 
 # What is the remote server developing outline?
 
