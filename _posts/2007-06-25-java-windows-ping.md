@@ -1,13 +1,15 @@
 ---
-layout: post
 title:  "Writing Java icmp ping for Windows"
-date:   2007-06-25
 ---
 
 As everybody knows it is impossible to do normal icmp ping using standard Java 
 classes.   You Must use JNI.
 But, it is much simpler to to use JNI through 
-[JniWrapper](http://www.teamdev.com/jniwrapper/). In short you will write your 
+[JniWrapper](http://www.teamdev.com/jniwrapper/). 
+
+{{ excerpt_separator }}
+
+In short you will write your 
 code in pure java and all native work will be done through lightweight jni 
 interface, that is JniWrapper.      Here is my example of code for working with
 pings in Windows in pure Java.     

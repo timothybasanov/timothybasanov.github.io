@@ -1,8 +1,10 @@
 ---
-layout: post
 title:  "Show Git State in zsh Prompt via vcs_info"
-date:   2016-04-23
 ---
+
+*zsh* has excellent capabilities of supporting different version control systems, like *git* in its command line prompt. Setup is pretty convoluted and I'll try to guide you through it to give you basic understanding of all the building blocks. You'll be able to craft your own one.
+
+{{ excerpt_separator }}
 
 <!-- Some magic from TextEdit -->
   <style type="text/css">
@@ -21,8 +23,6 @@ date:   2016-04-23
 <style type="text/css">
   p.p1, p.p2, p.p3 {  font-family: "Lucida Console", Monaco, monospace }
 </style>
-
-*zsh* has excellent capabilities of supporting different version control systems, like *git* in its command line prompt. Setup is pretty convoluted and I'll try to guide you through it to give you basic understanding of all the building blocks. You'll be able to craft your own one.
 
 I'll show evolution of a command line prompt after each modification in `.zshrc`. I'll assume `~/.git` exists and has changes on the master branch. Current directory is set to `~/.ssh`.
 

@@ -27,7 +27,7 @@ That's it. Your email is now secured on your Mac.
 
 # Enabling it on your iOS device
 
-You'll need to install certificate on your iOS device first: [Install Certificates on iOS Device Securely via Custom Profile](/2016/04/26/ios-secure-certificate-installation.html). Include both your and COMODO's certificates in a profile.
+You'll need to install certificate on your iOS device first: [Install Certificates on iOS Device Securely via Custom Profile]({{ site.url }}/2016/04/26/ios-secure-certificate-installation.html). Include both your and COMODO's certificates in a profile.
 
   - Go to *Settings / Mail, Contacts, Calendars / Accounts / Your Account / Mail / Advanced*
   - Enable *S/MIME* and *Sign* with the right certificate (if you have many email addresses)
