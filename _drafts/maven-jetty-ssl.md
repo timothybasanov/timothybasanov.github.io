@@ -86,6 +86,13 @@ src/main/config/jetty-https.xml:
                                     <Set name="keyStorePassword">
                                         <Property name="org.eclipse.jetty.ssl.password"/>
                                     </Set>
+                                    <Call name="addExcludeCipherSuites">
+                                        <Arg>
+                                            <Array type="String">
+                                                <Item>.*DHE.*</Item>
+                                            </Array>
+                                        </Arg>
+                                    </Call>
                                 </New>
                             </Arg>
                         </New>
