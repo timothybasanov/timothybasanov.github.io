@@ -25,11 +25,11 @@
                     <systemProperties>
                         <systemProperty>
                             <name>jetty.ssl.keyStorePath</name>
-                            <value>${project.build.directory}/ssl/jetty.keystore</value>
+                            <value>${project.build.directory}/ssl/jetty.p12</value>
                         </systemProperty>
                         <systemProperty>
                             <name>org.eclipse.jetty.ssl.password</name>
-                            <value>jetty.keystore</value>
+                            <value>changeit</value>
                         </systemProperty>
                     </systemProperties>
                 </configuration>
@@ -114,7 +114,8 @@ cd target
 if [ ! -f ssl/jetty.key ]; then
   mkdir -p ssl
   cd ssl
-  KEYSTORE_OPTIONS="-alias jetty -noprompt -keystore jetty.keystore -storepass jetty.keystore -keypass jetty.keystore"
-  yes | keytool -genkey -keyalg RSA $KEYSTORE_OPTIONS
-  keytool -exportcert -rfc $KEYSTORE_OPTIONS > jetty.key
+  yes | keytool -genkey -keyalg RSA -alias jetty -noprompt \
+      -keystore jetty.p12 -storetype pkcs12 \
+      -storepass changeit -keypass changeit
 fi
+
