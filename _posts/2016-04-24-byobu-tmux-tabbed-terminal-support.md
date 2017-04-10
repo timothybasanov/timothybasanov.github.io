@@ -2,6 +2,8 @@
 title:  "Configuring byobu/tmux to support tabbed & windowed terminals"
 ---
 
+> As of April 2017 this instruction does not apply anymore. Default byobu installation would work just fine. I'll leave it here for historical purposes.
+
 At some point my favorite console "window manager" [byobu](http://byobu.co) switched from *screen* to *tmux* as a backend. *tmux* is much more feature rich and supports splits, for example. 
 
 There is only one downside, but a big one: there could only be one client per *tmux* session. So when you open terminal in several different windows each of them connects to the same *tmux* session and they show exactly the same window. Yes, you can use *tmux* internal windowing capabilities just fine, but I always wanted to have several "real" windows into the same *tmux* session.
