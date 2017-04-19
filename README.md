@@ -1,8 +1,8 @@
-Local server:
+# Configuring local environment
 
 ```sh
 brew install ruby
 gem install bundler
 bundle install
-jekyll serve --watch
+bundle exec jekyll serve --watch --drafts
 ```

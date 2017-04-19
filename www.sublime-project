@@ -12,12 +12,12 @@
             "cmd": ["bundle", "exec", "jekyll", "build", "--drafts"],
             "file_regex": "^.*(?:Build Warning:.* in |Error:\\s+\\()([^\\s\\):]+)(LineNumber)?(ColumnNumber)?[:\\)\\s]*(.*)",
             "working_dir": "${project_path:${folder}}",
-            "variants": [ { 
-                "name": "Run", 
-                "cmd": ["bundle", "exec", "jekyll", "serve", "--drafts"],
-            }, { 
-                "name": "Stop", 
-                "cmd": ["pkill", "-fl", "jekyll"] 
+            "variants": [ {
+                "name": "Run",
+                "cmd": ["bundle", "exec", "jekyll", "serve", "--drafts", "--watch"],
+            }, {
+                "name": "Stop",
+                "cmd": ["pkill", "-fl", "jekyll"]
             } ],
         }
     ]
