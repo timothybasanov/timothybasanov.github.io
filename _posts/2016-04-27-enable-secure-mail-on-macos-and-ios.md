@@ -16,6 +16,8 @@ Almost every certificate authority provides free secure email certificate, you c
   - You'll get a confirmation email with a link for a certificate key
   - Download it and open to import into *Keychain*. Choose *Apache* if there is a choice of different certificate types
 
+> You may get import errors, verify if your certs are imported anyway
+
 # Done..?
 
 That's it. Your email is now secured on your Mac.
