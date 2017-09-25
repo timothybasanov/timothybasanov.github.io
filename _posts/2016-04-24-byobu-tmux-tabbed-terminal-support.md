@@ -1,10 +1,10 @@
 ---
-title:  "Configuring byobu/tmux to support tabbed & windowed terminals"
+title:  "Configuring Byobu/Tmux to Support Tabbed & Windowed Terminals"
 ---
 
 > As of April 2017 this instruction does not apply anymore. Default byobu installation would work just fine. I'll leave it here for historical purposes.
 
-At some point my favorite console "window manager" [byobu](http://byobu.co) switched from *screen* to *tmux* as a backend. *tmux* is much more feature rich and supports splits, for example. 
+At some point my favorite console "window manager" [byobu](http://byobu.co) switched from *screen* to *tmux* as a backend. *tmux* is much more feature rich and supports splits, for example.
 
 There is only one downside, but a big one: there could only be one client per *tmux* session. So when you open terminal in several different windows each of them connects to the same *tmux* session and they show exactly the same window. Yes, you can use *tmux* internal windowing capabilities just fine, but I always wanted to have several "real" windows into the same *tmux* session.
 
@@ -12,7 +12,7 @@ Looks like there is a way to exactly that using *tmux* "session grouping". This 
 
 <!--more-->
 
-# Creating several connected sessions in raw *tmux*
+## Creating several connected sessions in raw *tmux*
 
 As per *tmux* documentation, `new-session` has two parameters of interest:
 
@@ -24,11 +24,11 @@ You have to name your sessions to specify that name later in a `-t` parameter.
 ```sh
 terminal1$ tmux new-session -s main \; new-window
 terminal2$ tmux new-session -s secondary -t main \; new-window
-# Both terminals now share the same set of windows,
-# but different windows are active
+## Both terminals now share the same set of windows,
+## but different windows are active
 ```
 
-# Use one persistent session and make others temporary
+## Use one persistent session and make others temporary
 
 *tmux* configuration language is quite restricted. I ended up with having one session that is persistent and is never destroyed or attached to and all the others live in a "create, attach, work, detach & destroy" lifecycle. Generally I have *N+1* sessions when *N* clients are connected.
 
@@ -38,7 +38,7 @@ terminal2$ tmux new-session -s secondary -t main \; new-window
 
 Now when new client session is created you can connect to a *shared* one: `tmux new-session -t shared`. This session will be destroyed on a terminal closure.
 
-# Convince *byobu* to use our new configuration
+## Convince *byobu* to use our new configuration
 
 To make *byobu* read your configuration it's sufficient to add this to your `~/.byobu/.tmux.conf` configuration file:
 
@@ -70,6 +70,6 @@ That's it. Two files, four lines of code and your *byobu* now works well with du
 
 Good luck!
 
-# Full text of my current *byobu/tmux* configuration
+## Full text of my current *byobu/tmux* configuration
 
 <script src="https://gist.github.com/timothybasanov/00f109853d73135749ccd4884312bcb0.js"></script>

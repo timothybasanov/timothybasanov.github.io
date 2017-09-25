@@ -1,5 +1,5 @@
 ---
-title:  "How to recover iPhone backup's password?"
+title:  "How to Recover iPhone Backup's Password?"
 ---
 
 If you backup your iPhone or iPad onto your iMac via iTunes you probably use
@@ -19,7 +19,7 @@ solution is to use a command-line utility that does it for free.
 
 <!--more-->
 
-# Why does it take a minute to try only one password?
+### Why does it take a minute to try only one password?
 
 See StackOverflow for
 [How to decrypt an encrypted Apple iTunes iPhone backup?](https://stackoverflow.com/questions/1498342/how-to-decrypt-an-encrypted-apple-itunes-iphone-backup)
@@ -28,7 +28,7 @@ scheme with lots of iterations. So there is
 not shortcut, unless SHA is completely broken by the time you're
 reading this article.
 
-# Is it important which iOS version do you have?
+### Is it important which iOS version do you have?
 
 Yes. New versions of iOS/macOS/iTunes often bring new schemes for password
 encryption, usually it only gets stronger over time. It also means
@@ -38,7 +38,7 @@ scheme, you're out of luck.
 I've tried it with iOS 10.3.3 backups in iTunes 12.6.2.20 on macOS 10.12.15
 and it worked fine.
 
-# What have I used to decrypt it?
+## What have I used to decrypt it?
 
 Collection of python scripts that can decrypt iPhone backups as one of the
 many features that they support:
@@ -50,7 +50,7 @@ letters for the rest, so my search was very short.
 I used this simple shell script to try to figure out the last 3 letters:
 
 ```sh
-#!/bin/bash
+##!/bin/bash
 
 try_pass() {
   END="$1$2$3"
@@ -64,10 +64,10 @@ try_pass() {
   # If extract directory was created, exit with non-0 status
   [ ! -d ./extract ]
 }
-# Make it available to parallel, only works in bash
+## Make it available to parallel, only works in bash
 export -f try_pass
 
-# show progress, tag output, exit when non-0 status, pipe output
+## show progress, tag output, exit when non-0 status, pipe output
 parallel --progress --tag --halt soon,fail=1 \
       try_pass ::: {a..z} ::: '' {a..z} ::: '' {a..z} \
   > getpass.out

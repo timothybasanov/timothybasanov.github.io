@@ -1,11 +1,11 @@
 ---
-title:  "Installing Unifi and mFI controller software onto Ubiquiti's NVR"
+title:  "Installing UniFi and mFI Controller Software onto Ubiquiti's UNC-NVR"
 ---
 
 It makes some sense to keep all Ubiquiti's software on the same PC,
 and UNV-NVR is the best one with software already preinstalled.
 NVR has Debian 7 installed by default, so it's easy to install both
-mFI and Unifi,
+mFI and UniFi,
 with a caveat of using MongoDB 2.4 instead of a default 2.0 or 3.0 one.
 
 <!--more-->
@@ -52,14 +52,14 @@ install fresher version from
 [Wheezy Backports Debian](https://backports.debian.org/Instructions/):
 
 ```sh
-# Remove MongoDB's old version 2.0 and all Ubiquiti's software
+## Remove MongoDB's old version 2.0 and all Ubiquiti's software
 apt-get purge '^mongodb.*' mfi unifi unifi-video
 reboot
 ```
 > You need purge to make sure that old MongoDB databases would be disabled.
 
 ```sh
-# Install a version 2.4
+## Install a version 2.4
 echo 'deb http://ftp.debian.org/debian wheezy-backports main contrib non-free' \
   > /etc/apt/sources.list.d/debian-backports.list
 apt-get update
@@ -68,7 +68,7 @@ apt-get -t wheezy-backports install mongodb
 
 > Using old version of MongoDB almost works, until server reboot.
 
-### Install Unifi, Unifi Video and mFI
+### Install UniFi, UniFi Video and mFI
 
 Time to reinstall all the software back!
 
@@ -80,18 +80,13 @@ reboot
 > Be sure to agree for a unifi's backup, if apt asks for permission.
 > Declining may cause installation failure and half-installed packages.
 
-## Fix disappeared Unifi button on the main NVR Web UI
+That's it! Now everything should be just working. =)
 
-There is a bug with default permissions for Unifi package. mFI package
-is fine. Wrong permissions prevent Unifi being detected by NVR software
-and no "button" appears on the main Web UI.
-
+> Note: There is a bug with default permissions for UniFi package. mFI package
+is fine. Wrong permissions prevent UniFi being detected by NVR software
+and no "button" appears on the main Web UI. This is a temporary fix until a next
+restart:
 ```sh
 chmod +x /usr/lib/unifi/data
 chmod +r /usr/lib/unifi/data/system.properties
 ```
-
-That's it!
-
-
-

@@ -1,5 +1,5 @@
 ---
-title:  "Show git state in zsh prompt via vcs_info"
+title:  "Show Git State in ZSH Prompt via vcs_info"
 ---
 
 *zsh* has excellent capabilities of supporting different version control systems, like *git* in its command line prompt. Setup is pretty convoluted and I'll try to guide you through it to give you basic understanding of all the building blocks. You'll be able to craft your own one.
@@ -10,7 +10,7 @@ I'll show evolution of a command line prompt after each modification in `.zshrc`
 
 > zsh has very extensive documentation. Two particularly useful pages are: [zsh Prompt Expansion](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) and [zsh Version Control Information](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information). You do not need to read them through, but they will be extremely useful when you'll try to add some special flavor into your own prompt command.
 
-### Quickstart
+## Quickstart
 
 <!-- Some magic from TextEdit -->
   <style type="text/css">
@@ -32,7 +32,7 @@ I'll show evolution of a command line prompt after each modification in `.zshrc`
 
 You can set reasonable defaults from the [zsh vcs_info Quickstart](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Quickstart) (don't forget to add `autoload -Uz vcs_info`) and try to understand what does it mean later.
 
-### Show current user and directory in the command prompt
+#### Show current user and directory in the command prompt
 
 <p class="p1"><span class="s1">timothy@home:~/.ssh&gt;<span class="Apple-converted-space"> </span></span></p>
 
@@ -42,7 +42,7 @@ zsh supports username `%n`, short hostname `%m` and directory `%~` in prompt  ([
 
 It's pretty basic, but that's only a beginning.
 
-### Show git (or any other version management system) info in the prompt
+#### Show git (or any other version management system) info in the prompt
 
 <p class="p1"><span class="s1">timothy@home: (git)-[master]-&gt;<span class="Apple-converted-space"> </span></span></p>
 
@@ -53,19 +53,19 @@ It's pretty basic, but that's only a beginning.
 
 Now we can see that we're within git repository.
 
-### Add repository path and path within repository to the prompt
+#### Add repository path and path within repository to the prompt
 
 <p class="p1"><span class="s1">timothy@home:/Users/timothy/(master).ssh&gt;<span class="Apple-converted-space"> </span></span></p>
 
   - Show full path when outside of git: `zstyle ':vcs_info:*' nvcsformats '%~'`
-  - Show base (.git) directory, current branch and path within a repo: 
+  - Show base (.git) directory, current branch and path within a repo:
     `zstyle ':vcs_info:*' formats '%R/(%b)%S'`
 
 All the information about available options check [zsh vcs_info Configuration](http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Configuration-3). It's particularly useful to check for all expansion parameters available in different contexts.
 
 That's much better, we got back information about our current directory
 
-### Add information about uncommitted changes
+#### Add information about uncommitted changes
 
 <p class="p1"><span class="s1">timothy@home:/Users/timothy/(master).ssh!&gt;<span class="Apple-converted-space"> </span></span></p>
 
@@ -76,7 +76,7 @@ That's much better, we got back information about our current directory
 
 Good, we see `!` as we have uncommitted changes, as expected.
 
-### Supporting merge and other special states
+#### Supporting merge and other special states
 
 <p class="p1"><span class="s1">timothy@home:~/(rebase|20eeb6f... (3 applied)).ssh!&gt;<span class="Apple-converted-space"> </span></span></p>
 
@@ -89,7 +89,7 @@ In *git* miscellaneous data is formatted as either `%p (%n applied)` or `no patc
 
   - Shorten revision number during rebase: `zstyle ':vcs_info:git:*' patch-format '%10>...>%p%<< (%n applied)'`
 
-### Use `~` for the home directory once again
+#### Use `~` for the home directory once again
 
 <p class="p1"><span class="s1">timothy@home:~/(master).ssh!&gt;<span class="Apple-converted-space"> </span></span></p>
 
@@ -103,7 +103,7 @@ function +vi-home-path() {
 }
 ```
 
-# Making it look nicer!
+### Making it look nicer!
 
 <p class="p3"><span class="s2">timothy</span><span class="s3">@</span><span class="s4">home</span><span class="s3">:</span><span class="s5">~/</span><span class="s2">(master)</span><span class="s5">.ssh</span><span class="s6"><b>●</b></span><span class="s7">⟫</span><span class="s3"><span class="Apple-converted-space"> </span></span></p>
 

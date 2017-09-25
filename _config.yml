@@ -1,20 +1,28 @@
 # Site settings
 title: Timothy Basanov
+author: Timothy
 email: timofey.basanov@gmail.com
 url: "https://timothybasanov.com" # the base hostname & protocol for your site
 github_username: timothybasanov
-twitter_username: timothybasanov 
+twitter_username: timothybasanov
+description: >
+  Timothy's projects and
+  a blog with instructions for tricky edge cases that I
+  encountered either at home or at work
 
-exclude: [Gemfile, README.md, '*.sublime-*', CNAME]
-safe: true
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - '*.sublime-*'
+  - CNAME
 timezone: America/Los_Angeles
 
-kramdown: 
-  input: GFM
-
-redcarpet:
-  extensions: [smart]
-
+# Default layout for all _posts
 defaults:
   -
     scope:

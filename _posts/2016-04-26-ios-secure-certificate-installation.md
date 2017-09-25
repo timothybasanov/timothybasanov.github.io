@@ -1,12 +1,12 @@
 ---
-title:  "Install certificates on iOS devices securely via custom profile"
+title:  "Install Certificates on iOS Devices Securely via a Custom Profile"
 ---
 
 Installing certificates on iOS devices (at least on iPads and iPhones) can be done via a cable without using a less secure email-based transport. It's easy and free via [Apple Configurator 2](https://itunes.apple.com/us/app/apple-configurator-2/id1037126344).
 
 <!--more-->
 
-# Saving certificates on disk
+## Saving certificates on disk
 
 *Apple Configurator* can only load certificates from disk, so you have to export them from *Keychain* if they are stored there.
 
@@ -14,7 +14,7 @@ Installing certificates on iOS devices (at least on iPads and iPhones) can be do
   - Select certificates and export them in `.p12` format: <kbd>Shift-Command-E</kbd>
   - As disk is a less secure storage using a password is recommended: `openssl -base64 10`
 
-# Create a custom profile containing certificates
+## Create a custom profile containing certificates
 
   - Install and run [Apple Configurator 2](https://itunes.apple.com/us/app/apple-configurator-2/id1037126344) from the AppStore
   - Create a new profile: <kbd>Command-N</kbd>
@@ -24,7 +24,7 @@ Installing certificates on iOS devices (at least on iPads and iPhones) can be do
 
 > If you don't specify `.p12` password in a configurator's profile you can ignore errors shown. ifou choose you save a configurator's profile on disk this password is saved **in clear text**
 
-# Install profile containing certificates on a device
+## Install profile containing certificates on a device
 
   - Connect your device via *USB cable*
   - In *Apple Configurator* select your device and open *Profiles* tab, add profile you just created

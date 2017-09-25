@@ -1,5 +1,5 @@
 ---
-title:  "Enable secure signed email on macOS and iOS"
+title:  "Enable Secure Signed Email on macOS and iOS"
 ---
 
 Both *macOS* and *iOS* support secure signing for your email messages. It's easy to setup and it "just works".
@@ -8,7 +8,7 @@ If you ever receive a signed message from somebody you can send them *encrypted 
 
 <!--more-->
 
-# Getting free secure email certificate
+## Getting free secure email certificate
 
 Almost every certificate authority provides free secure email certificate, you can use [COMODO Secure Email Certificate](https://secure.comodo.com/products/frontpage?area=SecureEmailCertificate), it's as good as any.
 
@@ -18,7 +18,7 @@ Almost every certificate authority provides free secure email certificate, you c
 
 > You may get import errors, verify if your certs are imported anyway
 
-# Done..?
+## Done..?
 
 That's it. Your email is now secured on your Mac.
 
@@ -29,9 +29,9 @@ That's it. Your email is now secured on your Mac.
 
 > If you encrypt an email *subject* is still sent in clear text. Even you will not see a body of that email. When you'll receive encrypted mail you will only be able to read it on a device with certificate in a *Keychain*. Online? No luck.
 
-# Enabling it on your iOS device
+## Enabling it on your iOS device
 
-You'll need to install certificate on your iOS device first: [Install Certificates on iOS Device Securely via Custom Profile]({{ site.baseurl }}/2016/04/26/ios-secure-certificate-installation.html). Include both your and COMODO's certificates in a profile.
+You'll need to install certificate on your iOS device first: [Install Certificates on iOS Device Securely via Custom Profile]({% post_url 2016-04-26-ios-secure-certificate-installation %}). Include both your and COMODO's certificates in a profile.
 
   - Go to *Settings / Mail, Contacts, Calendars / Accounts / Your Account / Mail / Advanced*
   - Enable *S/MIME* and *Sign* with the right certificate (if you have many email addresses)

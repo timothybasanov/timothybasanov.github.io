@@ -1,5 +1,5 @@
 ---
-title:  "Maven integration tests and Jetty with SSL enabled"
+title:  "Maven Integration Tests and Jetty with SSL Enabled"
 ---
 
 Running integration tests with *Jetty* using *maven* usually is plain and awesome. At least not until you try to enable *SSL*. And then suddenly everything goes to hell. As I have not found a definitive source of a simple working *Jetty* config and I'm sharing my findings.
@@ -12,7 +12,7 @@ To run integration tests with Jetty under maven with SSL you'll need to
 
 <!--more-->
 
-# Starting and stopping Jetty before and after integration tests
+## Starting and stopping Jetty before and after integration tests
 
 This part is easy and is well known. Just add this to your `pom.xml`:
 
@@ -42,14 +42,14 @@ This part is easy and is well known. Just add this to your `pom.xml`:
 
 It executes *Jetty* plugin before and after integration tests to start and stop local *Jetty* instance.
 
-# Generating *Jetty* SSL keys in a *PKCS12* format using `keytool`
+## Generating *Jetty* SSL keys in a *PKCS12* format using `keytool`
 
 > Using PKCS12 format for keystore allows you to load same keys in other programs like Wireshark.
 
 Use script to generate an RSA keypair to use for SSL `src/main/scripts/generate-integration-test-ssl-key`:
 
 ```sh
-#!/usr/bin/env bash
+##!/usr/bin/env bash
 
 mkdir -p target
 cd target
@@ -86,7 +86,7 @@ You may run it once manually or automatically. To automate this script has to be
 </plugin>
 ```
 
-# Configuring Jetty to enable SSL and use generated keys
+## Configuring Jetty to enable SSL and use generated keys
 
 Recent versions of *Jetty* do not support *SSL/HTTPS* configuration through the `pom.xml`, it has to be a separate property file. Add this config to your *Jetty*'s section in `pom.xml`:
 
@@ -115,7 +115,7 @@ And here is the simplest `jetty.xml` possible that enables *SSL/HTTPS* `src/main
 <!-- Simplest working Jetty SSL configuration serving on https://localhost:8443-->
 <Configure id="Server" class="org.eclipse.jetty.server.Server">
     <Call name="addConnector">
-        <Arg>            
+        <Arg>
             <!-- Setting up a new connector that serves HTTPS -->
             <New class="org.eclipse.jetty.server.ServerConnector">
                 <Arg name="server">
@@ -143,7 +143,7 @@ And here is the simplest `jetty.xml` possible that enables *SSL/HTTPS* `src/main
                                     <Set name="keyStorePassword">
                                         <Property name="org.eclipse.jetty.ssl.password"/>
                                     </Set>
-                                    <!-- Disabling Diffie-Hellman key exchange 
+                                    <!-- Disabling Diffie-Hellman key exchange
                                          to simplify traffic decryption -->
                                     <Call name="addExcludeCipherSuites">
                                         <Arg>

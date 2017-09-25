@@ -1,5 +1,5 @@
 ---
-title:  "Guice singletons parallelization"
+title:  "Guice Singletons Parallelization"
 ---
 
 Guice is a Java library for dependency injection. It's a very widespread one and a lot of servers written in Java use it. Surprisingly until recently *all* singleton objects created by Guice were created sequentially.
@@ -13,15 +13,15 @@ It had two downsides:
 
 [Reimplementing Guice singleton scope](https://github.com/google/guice/commits?author=timofeyb) with a support for a proper multi-threading, turned out to be surprisingly hard.
 
-> Getting a deadlock with Guice's singletons: Thread `TA` creates singleton 
-  object `A`, using injector `IA`. Thread `T2` takes lock `L` and tries to 
+> Getting a deadlock with Guice's singletons: Thread `TA` creates singleton
+  object `A`, using injector `IA`. Thread `T2` takes lock `L` and tries to
   create a singleton object `B` using injector `IB`. Thread `TA` tries to
   take lock `L`. Now both threads wait for each other, we have a deadlock.
-  This is a *very* puzzling behaviour as threads use their individual 
+  This is a *very* puzzling behaviour as threads use their individual
   injectors and even create different objects.
 
 
-# Naïve way to fix it with lock per injector
+## Naïve way to fix it with lock per injector
 
 Giving each injector its own lock for singletons provides a simple way
 to parallelize common scenario when different injectors are used for
@@ -33,7 +33,7 @@ As it turns out Guice supports parent-child relations for injectors,
 one lock per such a tree is used.
 
 
-# Proper way to fix it with a lock per singleton
+## Proper way to fix it with a lock per singleton
 
 Giving each singleton its own lock allows full parallelization.
 

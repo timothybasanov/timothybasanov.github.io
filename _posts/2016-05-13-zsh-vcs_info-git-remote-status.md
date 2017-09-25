@@ -1,8 +1,8 @@
 ---
-title:  "Show git status in zsh prompt with respect to remote repo"
+title:  "Show Git Status in ZSH Prompt with Respect to a Remote Repo"
 ---
 
-*zsh* is a powerful shell that allows you to show your current *git* status in your command prompt: [Show git state in zsh prompt via vcs_info]({{ site.url }}/2016/04/23/zsh-prompt-and-vcs_info.html). It supports current branch, repo path and many other options, most notably *stage/unstaged* symbols to show you current git dirty state.
+*zsh* is a powerful shell that allows you to show your current *git* status in your command prompt: [Show git state in zsh prompt via vcs_info]({% post_url 2016-04-23-zsh-prompt-and-vcs_info %}). It supports current branch, repo path and many other options, most notably *stage/unstaged* symbols to show you current git dirty state.
 
 Here is how to reconfigure *zsh* to respect remote repo e.g. *GitHub*'s status properly.
 
@@ -63,7 +63,7 @@ Here is how *staged/unstaged* marks should work:
 ### First, you need to add your own hook to *zsh*
 
 ```sh
-# ~/.zshrc
+## ~/.zshrc
 zstyle ':vcs_info:git+post-backend:*' hooks git-remote-staged
 function +vi-git-remote-staged() {
   # .... set $gitstaged and $gitunstaged
@@ -78,7 +78,7 @@ function +vi-git-remote-staged() {
 Environment variables created by *zsh* original *git* integration are present and we can check against them directly:
 
 ```sh
-# Set "unstaged" when git reports either staged or unstaged changes
+## Set "unstaged" when git reports either staged or unstaged changes
 if (( gitstaged || gitunstaged )) ; then
   gitunstaged=1
 fi
@@ -101,7 +101,7 @@ Unfortunately it always has `0` return status, so I'm using `read` to detect if 
 > I'm writing code with respect to the original hook codebase, it may be more verbose than necessary, but will be more portable.
 
 ```sh
-# Set "staged" when current HEAD is not present in the remote branch
+## Set "staged" when current HEAD is not present in the remote branch
 if ${vcs_comm[cmd]} rev-parse --quiet --verify HEAD &> /dev/null ; then
     gitstaged=1
     if ${vcs_comm[cmd]} branch -r --contains 2> /dev/null | read REPLY ; then
@@ -112,6 +112,6 @@ fi
 
 And that's basically it!
 
-# Full text of my current `.zshrc`
+### Full text of my current `.zshrc`
 
 <script src="https://gist.github.com/timothybasanov/87df55aad8ca8afe40d2.js"></script>

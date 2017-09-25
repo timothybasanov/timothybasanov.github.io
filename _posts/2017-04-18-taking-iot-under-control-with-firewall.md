@@ -1,5 +1,5 @@
 ---
-title: "Taking your LAN network under control in the presence of IoT devices"
+title: "Taking Your LAN Network under Control in the Presence of IoT Devices"
 ---
 
 Using Internet of Things devices like Wi-Fi-connected light bulbs, switches,
@@ -126,7 +126,7 @@ Simplest way to deal with it is to drop it all.
 Add a new script: _Setup \| Scripts/Cron \| NAT And Virtual Servers_
 
 ```sh
-# Disable IPv6 support: routing and all, ZeroShell does not do it right by default
+## Disable IPv6 support: routing and all, ZeroShell does not do it right by default
 echo -n "[Disable IPv6]: "
 ip6tables -P FORWARD DROP \
 && sysctl -w net.ipv6.conf.all.disable_ipv6=1 \
@@ -413,7 +413,7 @@ if desired.
 
 `iptables -S`
 
-```sh
+```txt
 -P INPUT ACCEPT
 -P FORWARD DROP
 -P OUTPUT ACCEPT
@@ -483,7 +483,7 @@ if desired.
 
 `ip6tables -S`
 
-```sh
+```txt
 -P INPUT ACCEPT
 -P FORWARD DROP
 -P OUTPUT ACCEPT

@@ -2,4 +2,4 @@ _site
 .sass-cache
 www.sublime-workspace
 *.lock
-
+.jekyll-metadata

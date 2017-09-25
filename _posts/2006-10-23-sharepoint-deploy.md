@@ -1,12 +1,12 @@
 ---
-title:  "How to develop SharePoint Features on a remote server"
+title:  "How to Develop SharePoint Features on a Remote Server"
 ---
 
-Usually all *SPS 2007* developers create their programs on localhost server and later they publish them onto production one.   But I have not that much RAM to install server onto my developer machine. Plus - using remote machine as a server is pretty convenient, cause you may test your programme in a battle field, which should help you to avoid different code security problems.     The choice is up to you, but even on local machine some parts of my story will be usable.   
+Usually all *SPS 2007* developers create their programs on localhost server and later they publish them onto production one.   But I have not that much RAM to install server onto my developer machine. Plus - using remote machine as a server is pretty convenient, cause you may test your programme in a battle field, which should help you to avoid different code security problems.     The choice is up to you, but even on local machine some parts of my story will be usable.
 
 <!--more-->
 
-# What is the remote server developing outline?
+## What is the remote server developing outline?
 
   - Writing/modifying your programme
   - Build the project
@@ -14,23 +14,23 @@ Usually all *SPS 2007* developers create their programs on localhost server and 
   - See the results in browser
   - Optionally: use Remote Debugging
 
-Hmm... and here are some comments on these steps:  
+Hmm... and here are some comments on these steps:
 
-# Is it really possible to create SharePoint programs without a server on the localhost?
+## Is it really possible to create SharePoint programs without a server on the localhost?
 
-Yes, of course. But you'll need some brain work to make it working correctly.    The process of developing is straightforward, you create source files, then compile them in dll, then copy them to server. And, hop!, the server is using your new Feature.    The main problem here is to build dll files from sources. You'll need many `*.dll` files from *SharePoint Server* (or *WSS*, if you are not using Server functionality). They can be found on your hard drive (i never could remember the correct paths). Their names are like `Microsoft.SharePoint.dll` (the only lib i'm currently using).    Also you'll need `*.xsd` files for `Feature.xml` intellisense developing. You can copy them from one of the `*.cab` files of *SharePoint* distribution (or from the installed version of one).  Their names are: `amlQuery.xsd camlview.xsd coredefinitions.xsd wss.xsd wss12.xsd`    
+Yes, of course. But you'll need some brain work to make it working correctly.    The process of developing is straightforward, you create source files, then compile them in dll, then copy them to server. And, hop!, the server is using your new Feature.    The main problem here is to build dll files from sources. You'll need many `*.dll` files from *SharePoint Server* (or *WSS*, if you are not using Server functionality). They can be found on your hard drive (i never could remember the correct paths). Their names are like `Microsoft.SharePoint.dll` (the only lib i'm currently using).    Also you'll need `*.xsd` files for `Feature.xml` intellisense developing. You can copy them from one of the `*.cab` files of *SharePoint* distribution (or from the installed version of one).  Their names are: `amlQuery.xsd camlview.xsd coredefinitions.xsd wss.xsd wss12.xsd`
 
-> Tip: if you extract them from *.cab file, then you would need some renaming, like camlqry.xsd to CamlQuery.xsd    
+> Tip: if you extract them from \*.cab file, then you would need some renaming, like camlqry.xsd to CamlQuery.xsd
 
-# How to deploy your Feature onto the server?
+## How to deploy your Feature onto the server?
 
-First. You should make post-build event, to make it possible to redeploy Feature on the server by just one click of <kbd>Ctrl-Shift-B</kbd>. 
+First. You should make post-build event, to make it possible to redeploy Feature on the server by just one click of <kbd>Ctrl-Shift-B</kbd>.
 
-![feature-project-structure](http://photos1.blogger.com/blogger2/6286/1008001056893888/1600/feature-project-structure.png)
+![feature-project-structure](/assets/feature-project-structure.png)
 
-Personally, I'm using the next Directory hierarchy in the project:    All files that were created by me are in `Feature.Xxx` namespace and `SolutionDir/ProhectName/Feature/Xxx` directory. All the libraries, that I use (`*.dll` SharePoint assemblies), deploy sript and some utils are all in the `SolutionDir/lib` directory. This directory structure will be used in my deploy script. If you want another structure, just rewrite the part of the script.    
+Personally, I'm using the next Directory hierarchy in the project:    All files that were created by me are in `Feature.Xxx` namespace and `SolutionDir/ProhectName/Feature/Xxx` directory. All the libraries, that I use (`*.dll` SharePoint assemblies), deploy sript and some utils are all in the `SolutionDir/lib` directory. This directory structure will be used in my deploy script. If you want another structure, just rewrite the part of the script.
 
-# What do we need to do in the deploy script?
+## What do we need to do in the deploy script?
 
   - Delete old files from server
   - Copy `Feature.xml` and other Feature-specific files to `Features/Xxx` directory on the server
@@ -40,11 +40,11 @@ Personally, I'm using the next Directory hierarchy in the project:    All files 
   - Restart *IIS*
   - Reinstall Feature
 
-## What utils do I use?
+### What utils do I use?
 
-Of course I'm using some utils to help me make the deploy process easier.    I'm using `PsExec` from [sysinternals.com](http://sysinternals.com) to remotely run `gacutils` and `iisrestart` and `stsadm`. This util can run programs on the remote machine and impersonalize if you'll need it.    
+Of course I'm using some utils to help me make the deploy process easier.    I'm using `PsExec` from [sysinternals.com](http://sysinternals.com) to remotely run `gacutils` and `iisrestart` and `stsadm`. This util can run programs on the remote machine and impersonalize if you'll need it.
 
-## What .bat script I'm using.
+### What .bat script I'm using.
 
 ```sh
 @echo off
@@ -166,12 +166,12 @@ echo I  Build successful
 exit 0
 ```
 
-The only problem with this script is that it sometimes hangs the VS. Then you should kill `psexec` process from *TaskManager*.    The other problem is that you'll need to understand this script and change the variables at the beginning to your needs. This will require brains. This is not simple.    
+The only problem with this script is that it sometimes hangs the VS. Then you should kill `psexec` process from *TaskManager*.    The other problem is that you'll need to understand this script and change the variables at the beginning to your needs. This will require brains. This is not simple.
 
-# How do I remotely debug my program?
+## How do I remotely debug my program?
 
-The key idea is simple - to lay `*.pdb` files in the same directory as `*.dll` files. Then it'll be possible to debug programme remotely. If you have placed your files in GAC (and you'll need it for EventListener) then you would need to place `*.pdb` in... in some really non-readable-name directory like `\windows\assmbly\GAC_MSIL\XxxFeature\1.0.0.0__122335987743261\`  May be you'll need local admin account on server for your developer account.    All that you'll need from VS is to press `Debug/AttachToProcess/Portal/w3wp.exe` (select all instances).    
+The key idea is simple - to lay `*.pdb` files in the same directory as `*.dll` files. Then it'll be possible to debug programme remotely. If you have placed your files in GAC (and you'll need it for EventListener) then you would need to place `*.pdb` in... in some really non-readable-name directory like `\windows\assmbly\GAC_MSIL\XxxFeature\1.0.0.0__122335987743261\`  May be you'll need local admin account on server for your developer account.    All that you'll need from VS is to press `Debug/AttachToProcess/Portal/w3wp.exe` (select all instances).
 
-# And... what are the results?
+## And... what are the results?
 
 The results are just super!    I modify the programme, press <kbd>Ctrl-Shift-B</kbd>, resfresh in IE (to wake up *IIS*), *AttachToProcess* and can debug the progamme not using any resources on my local computer.    Even more, I can deploy it on any other server in the network, by changing only one parameter in the script. Hooray!
