@@ -77,6 +77,7 @@ server {
         ssl_certificate         /etc/nginx/NVR_SSL_Chain.pem;
         ssl_certificate_key     /etc/nginx/NVR_SSL_Chain.pem;
         ssl                     on;
+        ssl_protocols           TLSv1.2;
 
         location / {
                 proxy_pass              https://localhost:6443;
@@ -93,6 +94,7 @@ server {
         ssl_certificate         /etc/nginx/NVR_SSL_Chain.pem;
         ssl_certificate_key     /etc/nginx/NVR_SSL_Chain.pem;
         ssl                     on;
+        ssl_protocols           TLSv1.2;
 
         location / {
                 proxy_pass              https://localhost:7443;
@@ -109,6 +111,7 @@ server {
         ssl_certificate         /etc/nginx/NVR_SSL_Chain.pem;
         ssl_certificate_key     /etc/nginx/NVR_SSL_Chain.pem;
         ssl                     on;
+        ssl_protocols           TLSv1.2;
 
         location / {
                 proxy_pass              https://localhost:8443;
