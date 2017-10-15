@@ -117,6 +117,22 @@ Configuration instructions:
    up to 4 on the same channel
  - Create _Setup \| Network \| New BRIDGE_ with all interfaces: `BRIDGE00`
 
+> Another distribution I evaluated was pfSense. pfSense 2.3 is built on top of
+> FreeBSD 10 and does not support my Wi-Fi card of choice: TL-WDN4800.
+> pfSense 2.4 built on top of FreeBSD 11 is in beta test as of April 2017
+> and only supports amd64, which requires kernel recompilation to work on
+> [Soekris net6501](http://wiki.soekris.info/Installing_FreeBSD#net6501).
+>
+> pfSense 2.3 installation instructions:
+>  - Text on the console would be garbled, press `3` to get into a command line
+>    interface of FreeBSD loader
+>  - Type
+>    [`set console=comconsole`](https://www.freebsd.org/doc/en/books/handbook/serialconsole-setup.html)
+>    to fix console. You should see `OK`
+>  - Type
+>    [`set hint.acpi.0.disabled=1`](https://puck.nether.net/~majdi/ntp/)
+>    to disable ACPI. Otherwise boot will hang without any log messages
+>  - Type `boot -v` to boot the loader and install as usual
 
 #### IPv6
 
@@ -135,24 +151,6 @@ ip6tables -P FORWARD DROP \
 && echo SUCCESS || echo FAILED
 ```
 
-> Another distribution I evaluated was pfSense. pfSense 2.3 is built on top of
-> FreeBSD 10 and does not support my Wi-Fi card of choice: TL-WDN4800.
-> pfSense 2.4 built on top of FreeBSD 11 is in beta test as of April 2017
-> and only supports amd64, which requires kernel recompilation to work on
-> [Soekris net6501](http://wiki.soekris.info/Installing_FreeBSD#net6501).
->
-> pfSense 2.3 installation instructions:
->  - Text on the console would be garbled, press `3` to get into a command line
->    interface of FreeBSD loader
->  - Type
->    [`set console=comconsole`](https://www.freebsd.org/doc/en/books/handbook/serialconsole-setup.html)
->    to fix console. You should see `OK`
->  - Type
->    [`set hint.acpi.0.disabled=1`](https://puck.nether.net/~majdi/ntp/)
->    to disable ACPI. Otherwise boot will hang without any log messages
->  - Type `boot -v` to boot the loader and install as usual
-
-
 ## ZeroShell Firewall Rules
 
 All these rules are configured using ZeroShell Firewall.
@@ -161,7 +159,7 @@ I also provide
 relevant _iptables_ rules to make sure you can re-implement them in any
 other Linux distribution.
 
-All rules apply to _FORWARD_ chain only.
+All rules apply to _FORWARD_ chain and bridged packets only.
 
 
 #### 1. Drop invalid packets
@@ -228,7 +226,7 @@ _responses_ from _DeviceTypeX_ to _Secured_ network.
 > - Binary UDP data
 > - UDP data 17th bit is 0 (3rd byte highest bit)
 
- - Output: _ETH00_
+ - Input: _ETH00_
  - Fragments: Not match second and further
  - IPTABLES: `-m u32 --u32 0>>22&0x3C@8>>15&1=0`
  - nDPI: mdns
@@ -276,7 +274,7 @@ iptables: `-A FORWARD ! -f -m physdev --physdev-in ETH00 --physdev-is-bridged -m
  - ACTION: _ACCEPT_
  - LOG
 
-Firewall: `ACCEPT all opt !f in * out * 0.0.0.0/0 -> 0.0.0.0/0 PHYSDEV match --physdev-out ETH00 --physdev-is-bridged ndpi protocol mdns u32 "0x0>>0x16&0x3c@0x8>>0xf&0x1=0x1" /* Allow mDNS responses to Secured network (UDP payload, 3rd byte, first bit is 1) */`
+Firewall: `ACCEPT all opt !f in * out * 0.0.0.0/0 -> 0.0.0.0/0 PHYSDEV match --physdev-out ETH00 --physdev-is-bridgedprotocol SSDP STRING match "M-SEARCH" ALGO name bm TO 64 /* Allow SSDP requests from Secured network (has M-SEARCH string) */`
 
 iptables: `-A FORWARD ! -f -m physdev --physdev-in ETH00 --physdev-is-bridged -m ndpi  --ssdp  -m string --string "M-SEARCH" --algo bm --to 64 -m limit --limit 10/min --limit-burst 15 -j LOG --log-prefix "FORWARD/006"`
 
@@ -390,7 +388,7 @@ iptables: `-A FORWARD -d 192.168.0.1/32 -p udp -m physdev --physdev-out ETH00 --
 > We rely on our LAN to be limited to 192.168.0.0/16 network
 
  - Output: _ETH00_
- - Destination IP: 192.168.0.0/16
+ - Destination IP: NOT 192.168.0.0/16
  - ACTION: _ACCEPT_
 
 Firewall: `ACCEPT all opt -- in * out * 0.0.0.0/0 !-> 192.168.0.0/16 PHYSDEV match --physdev-out ETH00 --physdev-is-bridged /* Allow any traffic outside of LAN network */`
