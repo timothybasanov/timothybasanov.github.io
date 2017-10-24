@@ -6,6 +6,9 @@ Installing certificates on iOS devices (at least on iPads and iPhones) can be do
 
 <!--more-->
 
+> As of iOS 10.3 newly installed root CA certificates need to be manually enabled in
+_Settings | General | About | Certificate Trust Settings_
+
 ## Saving certificates on disk
 
 *Apple Configurator* can only load certificates from disk, so you have to export them from *Keychain* if they are stored there.
