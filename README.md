@@ -1,4 +1,4 @@
-# Configuring local environment
+## Configuring local environment
 
 ```sh
 brew install ruby

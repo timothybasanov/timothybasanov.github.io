@@ -14,7 +14,7 @@ title: "My Projects"
 * [node-nest](https://github.com/timothybasanov/node-nest):
   Small node.js server to help you control home appliances from your Nest thermostat
 
-# Some code that I wrote while working at Google
+## Some code that I wrote while working at Google
 
 * [guice](https://github.com/google/guice/commits?author=timofeyb):
   Reimplementing Guice singleton scope with a support for a proper multi-threading, turned out to be surprisingly hard
@@ -23,7 +23,7 @@ title: "My Projects"
 * [xpra-upstart](https://github.com/timothybasanov/xpra-upstart):
   Upstart config to run Xpra as a daemon in Ubuntu
 
-# One-off scripts:
+## One-off scripts:
 
 * [zeroshell-linode](https://github.com/timothybasanov/zeroshell-linode):
   Automation script to install [Zeroshell](http://www.wikiwand.com/en/Zeroshell) onto [Linode](https://www.linode.com) (Xen-based VM). Recompiles kernel and makes Grub work.
