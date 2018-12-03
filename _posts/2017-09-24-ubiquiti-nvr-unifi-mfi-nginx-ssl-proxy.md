@@ -6,18 +6,8 @@ All Ubiquiti controllers (mFI, UniFi Controller and UniFi Video Controller)
 insist on using HTTPS for all connections, which may break the experience
 in Safari when one uses default out-of-the-box self-signed certificates.
 
-Solution is simple: use Nginx to deal with SSL.
-
-<!--more-->
-
-## Installing Nginx and Configuring SSL
-
-> I assume that one uses NVR Ubiquiti box for all the controllers. That box
-uses Debian, but most of these instructions would just apply to Ubuntu as well.
-
-NVR has `nvr-webui` deb package, which has a dependency on `nginx-light`,
-which has all the facilities to make all of this work. Otherwise one would
-`apt-get install nginx` to get one on the box.
+Solution is simple: use Nginx to deal with SSL for most of the cases,
+the rest is to use SSL via Java to make secure sockets work.
 
 
 > File extensions are _very_ confusing when one is dealing with certificates.
@@ -37,6 +27,17 @@ In short if you use _OpenSSL_:
   - [X.509](https://wiki.openssl.org/index.php/Manual:X509(1))
     is the default format for keys and certificates, can be read by Nginx.
     Can be directly concatenated in its _PEM_ form
+
+<!--more-->
+
+## Installing Nginx and Configuring SSL
+
+> I assume that one uses NVR Ubiquiti box for all the controllers. That box
+uses Debian, but most of these instructions would just apply to Ubuntu as well.
+
+NVR has `nvr-webui` deb package, which has a dependency on `nginx-light`,
+which has all the facilities to make all of this work. Otherwise one would
+`apt-get install nginx` to get one on the box.
 
 The easiest way to make Nginx to work is to add all the required keys and
 certificates into a single decrypted X.509 PEM file, where private key
@@ -152,16 +153,27 @@ Ubiquiti published all the instructions in their
      `mkdir /usr/lib/unifi-video/data/certificates`
   1. Generate X.509 DER certificates file:
      ```sh
+     # Generate it from the original files
      (
+
        openssl pkcs12 -nodes -nokeys -in NVR_SSL.p12
        openssl x509 -inform der -in SSL_CA.cer
      ) | openssl x509 -outform DER \
        > /usr/lib/unifi-video/data/certificates/ufv-server.cert.der
+
+     # Alternatively read back Nginx configs
+     openssl x509 -outform DER -in /etc/nginx/NVR_SSL_Chain.pem \
+       > /usr/lib/unifi-video/data/certificates/ufv-server.cert.der
      ```
   1. Generate PKCS#8 DER private key file:
      ```sh
+     # Generate it from the original files
      openssl pkcs12 -nodes -nocerts -in NVR_SSL.p12 \
        | openssl pkcs8 -topk8 -nocrypt -outform DER \
+       > /usr/lib/unifi-video/data/certificates/ufv-server.key.der
+
+     # Alternatively read back Nginx configs
+     openssl pkcs8 -topk8 -nocrypt -outform DER -in /etc/nginx/NVR_SSL_Chain.pem \
        > /usr/lib/unifi-video/data/certificates/ufv-server.key.der
      ```
   1. Fix up the permissions:
