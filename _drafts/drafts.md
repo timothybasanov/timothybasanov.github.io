@@ -1,5 +1,7 @@
 ## Wait for docker is healthy
 
+```sh
+{% raw %}
 while true; do
   STATUS="$( ( docker-compose ps -q ; echo "container-name" ) | xargs docker inspect --format \
       '{{.Name}}={{.State.Status}}/{{with .State.Health}}{{.Status}}{{end}}' )"
@@ -17,3 +19,5 @@ while true; do
   fi
   sleep 1
 done
+{% endraw %}
+```
