@@ -203,10 +203,8 @@ you can add this into a plain JSON to configure devices mount:
    ],
 ```
 
-> It was very surprising, but yes, Synology does not document its internal
-format for a Docker JSON. Literally no matches except for binaries:
-```sh
-```
+> Note: If you run your Dockerized app under non-priviledged user, don't
+forget to give access to your devices: `chmod 777 /dev/dri/renderD128`
 
 There is no simple way of calling Dockerized _ffmpeg_ from
 an another Docker image, but if you use Debian-based docker image chances
