@@ -2,6 +2,15 @@
 title:  "Hardware-Accelerated h264 Encoding on Synology NAS"
 ---
 
+> Updated after publishing: Reddit's user verified support for DS218+.
+Added Debian Stretch-specific instructions. Added a disclaimer.
+
+> Disclaimer: I know very little about _ffmpeg_ and video encoding. I played
+around for several days to figure out how to make hardware video transcoding
+to work and just wrote down my findings. I'd be happy if somebody who knows
+knows about these things would help me to better understand why things
+behave the way they do.
+
 Many Synology NAS do have an Intel CPU that supports hardware-accelerated
 h264 encoding, which Intel calls QuickSync for marketing purposes.
 You would get around 10x improvement and most importantly real-time
@@ -18,7 +27,8 @@ which uses
 It's the same CPU as DS918+, so this should apply to that model as
 well. Similar
 [Intel Celeron J3355](https://ark.intel.com/products/95597/Intel-Celeron-Processor-J3355-2M-Cache-up-to-2-5-GHz-)
-also has QuickSync, so this would _probably_ apply to DS218+.
+also has QuickSync, all of this applies to DS218+
+([verified by ArtisanalCollabo](https://www.reddit.com/r/synology/comments/a4jboo/you_can_use_hardwareaccelerated_h264_encoding_on/ebg9hsg/)).
 
 <!--more-->
 
@@ -77,7 +87,7 @@ $ ffmpeg -buildconf 2>/dev/null | grep 'vaapi\|hw'
 which hints that Synology can somehow use hardware encoding.
 Most likely I'm just looking into the wrong place.
 
-### Debian's _ffmpeg_ and _VAAPI_
+### Docker-based _ffmpeg_ and _VAAPI_
 
 > Check [_VAAPI_ documentation](https://trac.ffmpeg.org/wiki/Hardware/VAAPI)
 for all the internal details, I would only show a very short summary.
@@ -88,19 +98,12 @@ It's always one of `/dev/dri/*` devices that can be used to talk to
 the underlying hardware. We only need one for our purposes:
 `/dev/dri/renderD128` (literally, `D128` is the same across platforms).
 
-> I had some issues when I tried to do both h264 decoding _and_ encoding
-at the same time, be careful with `-vf 'format=nv12'` and related parameters
-and you can make it work. If you have a warning from _ffmpeg_ about
-unstable threads, do not ignore it and try different options.
-
 Options to add to enable _VAAPI_:
-  * Use _VAAPI_ with a specific device `-vaapi_device /dev/dri/renderD128`
+  * Enable _VAAPI_ `-hwaccel vaapi`
   * Make frame buffer format conversion to make hardware codec happy:
-    `-vf 'format=nv12,hwupload'`. For example
-    `-vf 'scale=1920:1080'` is replaced with
-    `-vf 'scale=1920:1080,format=nv12,hwupload'`
-    or `-vf 'scale_vaapi=w=1280:h=720'`
-  * Actually use h264-codec with _VAAPI_ `-c:v h264_vaapi`
+    `-hwaccel_output_format vaapi` or
+    `-vf 'format=nv12,hwupload'` or `-vf 'scale_vaapi=w=1280:h=720'`
+  * Actually use h264-codec with _VAAPI_: `-c:v h264_vaapi`
 
 Simplest command to verify your encoding performance
 using an example video [Big Buck Bunny](http://bbb3d.renderfarming.net):
@@ -108,12 +111,75 @@ using an example video [Big Buck Bunny](http://bbb3d.renderfarming.net):
 sudo docker run --rm \
   --device /dev/dri:/dev/dri \
   jrottenberg/ffmpeg:vaapi \
-  -vaapi_device /dev/dri/renderD128 \
+  -hwaccel vaapi -hwaccel_output_format vaapi \
   -i http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4 \
+  -c:v h264_vaapi \
   /tmp/example.mp4
 ```
 
 > Check a longer example in a performance section below.
+
+### Debian Stretch-based _ffmpeg_ issues
+
+Debian Stretch-based _ffmpeg_ 3.2 differs from Docker defaults and
+require additional tweaks to make it work.
+I've only verified it from within Debian-based
+Docker image with _ffmpeg_ installed via `apt-get install ffmpeg`, so your
+results may differ.
+
+  * VAAPI-based surface format is not supported, so we can not use
+    `-hwaccel_output_format vaapi` directly
+  * This means we need to download decoded frames into memory and upload
+    them back via `-vf 'format=nv12,hwupload'`
+  * We need to explicitly specify device to upload frames to via
+    `-vaapi_device /dev/dri/renderD128`
+  * Overall it's much slower than full-speed hardware encoding,
+    but it's still much faster than a software one
+
+```sh
+sudo docker run --rm \
+  --device /dev/dri:/dev/dri \
+  debian:stretch-slim \
+  /bin/sh -c "
+    apt-get update
+    apt-get install --assume-yes ffmpeg
+    ffmpeg \
+      -hwaccel vaapi \
+      -vaapi_device /dev/dri/renderD128 \
+      -i http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4 \
+      -vf 'format=nv12,hwupload' \
+      -c:v h264_vaapi \
+      /tmp/example.mp4
+  "
+```
+
+  * In some cases you can use this format without crashes
+    `-hwaccel_output_format vaapi -vf 'format=nv12|vaapi,hwupload'`
+    this variant has the same performance as hardware variant,
+    but I'm not sure how portable it is
+
+```sh
+sudo docker run --rm \
+  --device /dev/dri:/dev/dri \
+  debian:stretch-slim \
+  /bin/sh -c "
+    apt-get update
+    apt-get install --assume-yes ffmpeg
+    ffmpeg \
+      -hwaccel vaapi -hwaccel_output_format vaapi \
+      -vaapi_device /dev/dri/renderD128 \
+      -i http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4 \
+      -vf 'format=nv12|vaapi,hwupload' \
+      -c:v h264_vaapi \
+      /tmp/example.mp4
+  "
+```
+
+> You may get this warning: _Hardware accelerated decoding with frame
+threading is known to be unstable and its use is discouraged._
+The way I read it it should be fixed if I specify `-threads 1`, but it does
+not fix it. This transcode was stable enough for my purposes, so I just
+ignored it.
 
 ## Synology Configs & Docker
 
@@ -152,16 +218,23 @@ apt-get install ffmpeg
 This may pull in the up-to-date version of _ffmpeg_ with all the right bindings
 and devices.
 
-## Transcoding Performance Results
+## Transcoding Performance Results on DS718+
 
 ### Big Buck Bunny: scaling from 1080p into 720p
 
 | | fps | CPU% | fps/CPU core |
 |-:|-|-|-|
 | Software: | 30 | 380% | 8 |
+| Mixed1: | 40 | 70% | 60 |
+| Mixed2:<sup>†</sup> | 60 | 70% | 85 |
 | Hardware: | 110 | 85% | 130 |
 | *Improvement:* | 3x | 5x | 15x |
 
+> <sup>†</sup> For some reason hardware-only surface formats are not supported
+on Debian and one needs to copy data between decoder and encoder via a main
+memory. This is not Debian-specific, but it only affected my Debian-based
+Docker images for some reason. I may be mistaken and it could be that
+either encoder or decoder are run in software.
 
 Software transcoding example command:
 ```sh
@@ -173,12 +246,51 @@ sudo docker run --rm \
   /tmp/example.mp4
 ```
 
+Mixed1: Transcoding that uses hardware decoder and encoder, but copies data
+over through a main memory between them. This is what you get by default
+on Debian Stretch. Example command:
+```sh
+sudo docker run --rm \
+  --device /dev/dri:/dev/dri \
+  debian:stretch-slim \
+  /bin/sh -c "
+    apt-get update
+    apt-get install --assume-yes ffmpeg
+    ffmpeg \
+      -hwaccel vaapi \
+      -vaapi_device /dev/dri/renderD128 \
+      -i http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4 \
+      -vf 'format=nv12,hwupload,scale_vaapi=w=1280:h=720' \
+      -c:v h264_vaapi \
+      /tmp/example.mp4
+  "
+```
+
+Mixed2: Just like Mixed1, but does one additional hack with `nv12|vaapi`.
+Example command:
+```sh
+sudo docker run --rm \
+  --device /dev/dri:/dev/dri \
+  debian:stretch-slim \
+  /bin/sh -c "
+    apt-get update
+    apt-get install --assume-yes ffmpeg
+    ffmpeg \
+      -hwaccel vaapi -hwaccel_output_format vaapi \
+      -vaapi_device /dev/dri/renderD128 \
+      -i http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4 \
+      -vf 'format=nv12|vaapi,hwupload,scale_vaapi=w=1280:h=720' \
+      -c:v h264_vaapi \
+      /tmp/example.mp4
+  "
+```
+
 Hardware-accelerated transcoding example command:
 ```sh
 sudo docker run --rm \
   --device /dev/dri:/dev/dri \
   jrottenberg/ffmpeg:vaapi \
-  -hwaccel vaapi -vaapi_device /dev/dri/renderD128 -hwaccel_output_format vaapi \
+  -hwaccel vaapi -hwaccel_output_format vaapi \
   -i http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4 \
   -vf 'scale_vaapi=w=1280:h=720' \
   -c:v h264_vaapi \
@@ -212,7 +324,7 @@ Hardware-accelerated transcoding example command:
 sudo docker run --rm \
   --device /dev/dri:/dev/dri \
   jrottenberg/ffmpeg:vaapi \
-  -hwaccel vaapi -vaapi_device /dev/dri/renderD128 -hwaccel_output_format vaapi \
+  -hwaccel vaapi -hwaccel_output_format vaapi \
   -rtsp_transport http -re -i $UNIFI_VIDEO_CAMERA_RSTP_URL?apiKey=$UNIFI_VIDEO_USER_API_KEY \
   -threads 0 -vcodec libx264 -an -pix_fmt yuv420p -r 30 -f rawvideo -tune zerolatency \
   -vf 'scale_vaapi=w=1920:h=1080' \
