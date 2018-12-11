@@ -3,7 +3,9 @@ title:  "Hardware-Accelerated h264 Encoding on Synology NAS"
 ---
 
 > Updated after publishing: Reddit's user verified support for DS218+.
-Added Debian Stretch-specific instructions. Added a disclaimer.
+Added Debian Stretch-specific instructions. Added a disclaimer. Opened a pull request
+[#30 for homebridge-camera-ffmpeg-ufv](https://github.com/gozoinks/homebridge-camera-ffmpeg-ufv/pull/30)
+to add support for VAAPI-based video transcoding.
 
 > Disclaimer: I know very little about _ffmpeg_ and video encoding. I played
 around for several days to figure out how to make hardware video transcoding
