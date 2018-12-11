@@ -22,7 +22,7 @@ Apache/PHP servers. I have a hope that this would work for most other
 Synology setups, but I have not tried it myself. Redirecting Synology's
 own host to a different port (:5000) may break applications like Photo Station,
 but I do not use them and have not verified if they were broken.
-I have only tried iOS _DS Finder_ app and it was unable to log in.
+I have only tried iOS _DS Finder_ app and it worked.
 
 ## Synology NAS Ports & Applications
 
