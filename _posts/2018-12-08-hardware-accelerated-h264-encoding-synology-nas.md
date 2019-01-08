@@ -2,8 +2,8 @@
 title:  "Hardware-Accelerated h264 Encoding on Synology NAS"
 ---
 
-> Updated after publishing: Reddit's user verified support for DS218+.
-Added Debian Stretch-specific instructions. Added a disclaimer. Opened a pull request
+> Updated after publishing: I've got reports of verified support on DS218+ and DS418play. 
+I've added Debian Stretch-specific instructions. Added a disclaimer. Opened a pull request
 [#30 for homebridge-camera-ffmpeg-ufv](https://github.com/gozoinks/homebridge-camera-ffmpeg-ufv/pull/30)
 to add support for VAAPI-based video transcoding.
 
@@ -30,12 +30,10 @@ It's the same CPU as DS918+, so this should apply to that model as
 well. Similar
 [Intel Celeron J3355](https://ark.intel.com/products/95597/Intel-Celeron-Processor-J3355-2M-Cache-up-to-2-5-GHz-)
 also has QuickSync, all of this applies to DS218+
-([verified by ArtisanalCollabo](https://www.reddit.com/r/synology/comments/a4jboo/you_can_use_hardwareaccelerated_h264_encoding_on/ebg9hsg/)).
+([verified by ArtisanalCollabo](https://www.reddit.com/r/synology/comments/a4jboo/you_can_use_hardwareaccelerated_h264_encoding_on/ebg9hsg/))
+and DS418play (verified by Arsen Vartapetov).
 
 <!--more-->
-
-DS418play has J3355 as well, but it does not officially support Docker.
-You still can probably can make it work somehow.
 
 CPUs that do not support QuickSync and do not support hardware acceleration:
   * [Intel Atom C3538](https://ark.intel.com/products/97929/Intel-Atom-Processor-C3538-8M-Cache-up-to-2-10-GHz-)
