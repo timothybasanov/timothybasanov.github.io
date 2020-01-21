@@ -7,6 +7,8 @@ macOS Keychain Access you'd be surprised to find that resulting certificate
 is not a valid SSL certificate anymore due to new
 [requirements in iOS 13 and macOS 10.15](https://support.apple.com/en-us/HT210176).
 
+<!--more-->
+
 # Issuing a CA Certificate
 
 - Open _Keychain Access | Certificate Assistant | Create a Certificate Authority..._
