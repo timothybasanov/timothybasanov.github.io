@@ -80,7 +80,7 @@ instruction are important and which are not. Try on your own peril.
    - You can uncheck _Include Key Usage Extension_, but it's not required
 1. _Extended Key Usage Extension_
    - Check _Include Key Usage Extension_
-   - Uncheck _This extension is critical_
+   - You can uncheck _This extension is critical_, but it's not required
    - Don't check any other _Capabilities_ except _SSL Server Authentication_
 1. _Basic Constraints Extension_
    - Leave unchecked
