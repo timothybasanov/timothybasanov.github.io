@@ -58,6 +58,14 @@ This article may inadvertently rely on
 [newer Debian's version from backports]({% post_url 2017-09-08-ubuquiti-nvr-unifi-mfi-install %}#add-ubiquitis-debian-repositories).
 Install with: `apt-get -t wheezy-backports install nginx-common nginx-light`
 
+> If you're using a CloudKey2 you need to copy the chain file into
+both `/etc/ssl/private/cloudkey.crt` and `/etc/ssl/private/cloudkey.key`
+which would be picked up by Nginx. To update UniFi controller's JKS store
+follow
+[Provisioning custom SSL keys to Ubiquiti CloudKey and UniFi Controller](https://blog.arrogantrabbit.com/ssl/Ubiquiti-SSL/), where all the steps before
+`openssl pkcs12 -export ...` were already completed. Be sure to create
+`cert.tar` as recommended.
+
 ### Configuring Nginx reverse proxy
 
  - Ubiquiti insists on using HTTPS ports, so we proxy pass to HTTPS ports
