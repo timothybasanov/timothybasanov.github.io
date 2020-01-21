@@ -11,7 +11,7 @@ is not a valid SSL certificate anymore due to new
 
 # Issuing a CA Certificate
 
-- Open _Keychain Access | Certificate Assistant | Create a Certificate Authority..._
+- Open _Keychain Access | Certificate Assistant | Create a Certificate Authority_
 - Update _Name_
 - Change _User Certificate_ to _SSL Server_ and do not override defaults
 
@@ -58,7 +58,7 @@ you need to open it and set _Trust | When using this_ to _Always Trust_.
 
 # Issuing an SSL Certificate
 
-- Open _Keychain Access | Certificate Assistant | Create a Certificate..._
+- Open _Keychain Access | Certificate Assistant | Create a Certificate_
 - Update _Name_
 - Change _Identity Type_ to _Leaf_
 - Change _Certificate Type_ to _SSL Server_ and click _Override defaults_
