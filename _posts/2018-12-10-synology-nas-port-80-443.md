@@ -38,6 +38,12 @@ instead of :5000 or :5001. I've tried to reconfigure it via SSH
 and Nginx config file, but there
 are many auto-generated config files so it's too fragile for my taste.
 
+> If you noticed that you're still being redirected to port :5001, check
+that you disabled _Automatically redirect HTTP connections to HTTPS
+ _Control Panel \| Network \| DSM Settings_. While you're connecting to
+ port :443, Nginx proxies your connection to :5000, which may force DSM to send
+ you a 302 redirect to :5001.
+
 ### Using Reverse Proxy to Control Nginx on :80/:443
 
  * Open _Control Panel \| Application Portal \| Reverse Proxy_
